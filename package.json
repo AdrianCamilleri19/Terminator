@@ -10,8 +10,13 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onLanguage:csharp",
-        "onLanguage:javascript"
+		"onLanguage:csharp",
+		"onLanguage:javascript",
+		"onLanguage:typescript",
+		"onLanguage:c",
+		"onLanguage:cpp",
+		"onLanguage:css",
+		"onLanguage:json"
 	],
 	"main": "./out/extension.js",
 	"contributes": {

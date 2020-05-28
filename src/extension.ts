@@ -74,7 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
 							let prePadding = ' '.repeat(preWhitespaces.length);
 							let codeStartIndex = preWhitespaces.length + preTerminators.length;
 							textEditList.push(vscode.TextEdit.insert(new vscode.Position(line.lineNumber, codeStartIndex), '\n' + prePadding));
-							
+
 							let postPadding = ' '.repeat(preTerminators.length);
 							let codeEndIndex = preWhitespaces.length + preTerminators.length + code.length;
 							textEditList.push(vscode.TextEdit.insert(new vscode.Position(line.lineNumber, codeEndIndex), postPadding));
@@ -94,4 +94,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.languages.registerDocumentFormattingEditProvider('csharp', editProvider);
 	vscode.languages.registerDocumentFormattingEditProvider('javascript', editProvider);
+	vscode.languages.registerDocumentFormattingEditProvider('typescript', editProvider);
+	vscode.languages.registerDocumentFormattingEditProvider('c', editProvider);
+	vscode.languages.registerDocumentFormattingEditProvider('cpp', editProvider);
+	vscode.languages.registerDocumentFormattingEditProvider('css', editProvider);
+	vscode.languages.registerDocumentFormattingEditProvider('json', editProvider);
 }
