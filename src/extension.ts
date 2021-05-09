@@ -12,10 +12,31 @@ export function activate(context: vscode.ExtensionContext) {
 
 			let terminators = [';', '{', '}'];
 			let indentSize = 4;
+			let isUsingTabs = false;
 
-			function escapeRegExp(text: string) {
+			let escapeRegExp = function (text: string) {
 				return text.replace(/[-[\]{}()*+?.,\\^$|#\\s]/g, '\\$&');
-			}
+			};
+
+			// let generateWhitespace = function (length: number, asTabs: boolean) {
+			// 	if (asTabs) {
+			// 		return '\t'.repeat(length);
+			// 	} else {
+			// 		return ' '.repeat(tabsCount * indentSize + spacesCount);
+			// 	}
+			// };
+
+			let convertWhitespaces = function (text: string, asTabs: boolean) {
+				let tabsMatch = text.match(new RegExp('\t'));
+				let tabsCount = tabsMatch ? tabsMatch.length : 0;
+				let spacesCount = text.length - tabsCount;
+
+				if (asTabs) {
+					return '\t'.repeat(spacesCount / indentSize + tabsCount);
+				} else {
+					return ' '.repeat(tabsCount * indentSize + spacesCount);
+				}
+			};
 
 			let terminatorsRegex = '';
 			for (let i = 0; i < terminators.length; i++) {
@@ -69,6 +90,9 @@ export function activate(context: vscode.ExtensionContext) {
 							} else {
 								textEditList.push(vscode.TextEdit.delete(new vscode.Range(lineIndex, 0, lineIndex, preWhitespaces.length)));
 							}
+						} else if (preWhitespaces) {
+							let newPreWhiteSpace = convertWhitespaces(preWhitespaces, isUsingTabs);
+							textEditList.push(vscode.TextEdit.replace(new vscode.Range(lineIndex, 0, lineIndex, preWhitespaces.length), newPreWhiteSpace));
 						}
 						if (preTerminators && code) {
 							let prePadding = ' '.repeat(preWhitespaces.length);
